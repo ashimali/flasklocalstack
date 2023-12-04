@@ -1,0 +1,39 @@
+services:
+
+  localstack:
+    container_name: "${LOCALSTACK_DOCKER_NAME-localstack-demo}"
+    image: localstack/localstack
+    ports:
+      - "127.0.0.1:4566:4566"
+      - "127.0.0.1:4510-4559:4510-4559"
+    environment:
+      - DEBUG=${DEBUG-}
+      - DOCKER_HOST=unix:///var/run/docker.sock
+    volumes:
+      - "./localstack/init-aws.sh:/etc/localstack/init/ready.d/init-aws.sh"
+      - "${LOCALSTACK_VOLUME_DIR:-./volume}:/var/lib/localstack"
+      - "/var/run/docker.sock:/var/run/docker.sock"
+    networks:
+      - localstack_network
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "5000:5000"
+    volumes:
+      - .:/app
+    env_file:
+      - .flaskenv
+    depends_on:
+      - localstack
+    networks:
+      - mynetwork
+      - localstack_network
+
+networks:
+  mynetwork:
+    driver: bridge
+  localstack_network:
+

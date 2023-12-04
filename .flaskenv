@@ -1,0 +1,7 @@
+FLASK_APP=app.py
+FLASK_ENV=development
+FLASK_RUN_HOST=0.0.0.0
+AWS_ACCESS_KEY_ID=test
+AWS_SECRET_ACCESS_KEY=test
+LOCALSTACK_HOST=localstack
+SQS_QUEUE_NAME= test-queue

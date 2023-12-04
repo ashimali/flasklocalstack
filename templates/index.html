@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://unpkg.com/htmx.org@1.9.9"></script>
+    <title>Message Board</title>
+</head>
+<body>
+    <h1>Message Board</h1>
+
+    <form action="/submit" method="post">
+        <label for="message_content">Enter Message:</label>
+        <input type="text" id="message_content" name="message_content" required>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h2>Messages:</h2>
+    <div hx-target="#messages" hx-get="/messages" hx-trigger="every 5s" hx-swap="innerHTML">
+        <ul id="messages">
+            {% for message in messages %}
+                <li>{{ message.content }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+
+</body>
+</html>
